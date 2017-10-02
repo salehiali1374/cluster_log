@@ -87,7 +87,8 @@ checkFinishedJobs(){
 }
 saveInDB(){
     # Save in jobsDB >> jobsData table
-    sqlite3 jobsDB.db "insert into jobsData (pid,username,No_Core,time) values ('$my_pid','$username','$No_core','$date_diff')"
+    today=date +%Y-%m
+    sqlite3 jobsDB.db "insert into jobsData (pid,username,No_Core,time,Date) values ('$my_pid','$username','$No_core','$date_diff','$today')"
 #	echo -e "****saved in data base****"
 }
 # main program :)))

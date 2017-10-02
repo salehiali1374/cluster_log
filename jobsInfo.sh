@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 
-while getopts "htu:a" options; do
+while getopts "hmtu:a" options; do
 	case "$options" in
 		h)
 			echo -e "##########################################"
@@ -11,6 +11,7 @@ while getopts "htu:a" options; do
 			echo -e "\t -a  :: show you all finished jobs until now. it has the information such as \"Username\", \"NO. Core\" \"Total Time\" for each job."
 			echo -e "\t -u  :: show information about specific \"USER\". Remind that you have to insert a username in front of this commanad in double quotation!!!"
 			echo -e "\t -t  :: show the total use of cores and times for each users."
+			echo -e "\t -m  :: show total usage of each user for each month"	
 		;;
 		a)
 			echo -e "pid\tusername\tNo.Core(s)\ttime"
@@ -41,6 +42,13 @@ while getopts "htu:a" options; do
 			echo -e "--------------------------------------------"
 			total=(`sqlite3 jobsDB.db "SELECT username,sum(No_Core),sum(time) from jobsData GROUP BY username"`)
 			for i in "${total[@]}";do
+				echo -e "$i\t"
+			done
+		;;
+		m)
+			echo -e "--username  |  total_Core(s)  |  total_time(min) | date(year-month)--"
+			m=(`sqlite3 jobsDB.db "SELECT username, sum(No_Core), sum(time),Date from jobsData GROUP BY username,Date"`)
+			for i in "${m[@]}";do
 				echo -e "$i\t"
 			done
 		;;
